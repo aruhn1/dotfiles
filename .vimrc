@@ -35,8 +35,6 @@ call plug#begin(s:plugged_install_dir)
 " ==================================
 " Formatting/colors
 " ==================================
-Plug 'lifepillar/vim-solarized8' " this one supports truecolors
-" Plug 'altercation/vim-colors-solarized'
 Plug 'editorconfig/editorconfig-vim'
 
 Plug 'hail2u/vim-css3-syntax' " updates vim's built-in css to support CSS3
@@ -64,12 +62,11 @@ Plug 'mlaursen/rmd-vim-snippets'
 Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all'}
 Plug 'junegunn/fzf.vim'
 
-" makes fzf work related to git root of buffer which is nice
-Plug 'airblade/vim-rooter'
+""Plug 'airblade/vim-rooter' " this changes the pwd to the project root
 Plug 'scrooloose/nerdtree', {'on': ['NERDTreeToggle', 'NERDTreeFind']}
 Plug 'Xuyuanp/nerdtree-git-plugin', {'on': ['NERDTreeToggle', 'NERDTreeFind']}
 
-Plug 'tpope/vim-fugitive'
+""Plug 'tpope/vim-fugitive'
 
 " allows \bo to close all buffers except current focus
 Plug 'vim-scripts/BufOnly.vim'
@@ -110,6 +107,7 @@ let g:airline_solarized_bg='dark'
 
 " Always show the status bar and airline
 set laststatus=2
+set statusline=%<\ %f\ %m%r%y%w%=\ L:\ \%l\/\%L\ C:\ \%c\ 
 set cmdheight=2
 
 " ================================================================
@@ -132,9 +130,9 @@ set shortmess+=c
 let g:coc_global_extensions=[
       \ 'coc-css',
       \ 'coc-pairs',
-      \ 'coc-stylelintplus',
       \ 'coc-scssmodules',
       \ 'coc-docker',
+      \ 'coc-stylelintplus',
       \ 'coc-eslint8',
       \ 'coc-json',
       \ 'coc-html',
@@ -337,7 +335,7 @@ let mapleader = "\\"
 let g:mapleader = "\\"
 
 " change directory to folder of current file
-nnoremap <leader>cd :cd %:p:h<cr>
+"nnoremap <leader>cd :cd %:p:h<cr>
 
 " turn backup off since it's handled by git
 set nobackup
@@ -417,20 +415,23 @@ set lazyredraw
 " For regular expressions turn magic on
 set magic
 
+" basic behavior
+set hidden
+
 " update tab behavior
 set smartindent
 set autoindent
 set expandtab
 set smarttab
-set shiftwidth=2
-set tabstop=2
+set shiftwidth=4
+set tabstop=4
 
 " line breaking
 set lbr
 
 set ai "Auto indent
 set si "Smart indent
-set nowrap
+set wrap
 
 " Show matching brackets when text indicator is over them
 set showmatch
@@ -443,9 +444,68 @@ set novisualbell
 set t_vb=
 set tm=500
 
+"mouse 
+set mouse=a
+if has("mouse_sgr")
+	set ttymouse=sgr
+	else
+	set ttymouse=xterm2
+	end
+
+"tags
+"set tags+=/home/an/.vim/ctags
+set tags+=tags;./src/tags;/
+
+"for opening ctags in vertical split. The default C-W C-] opens in a
+"horizontal split
+map <C-W><C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
+
+"to automatically save/load folds
+au BufWinLeave ?* mkview
+au BufWinEnter ?* silent loadview
+
+"netrw explorer tree view style
+let g:netrw_liststyle = 3
+
+"for showing list of buffers
+nnoremap gb :ls<CR>:b<Space>
+
+"remap for inserting closing brackets, etc. 
+inoremap << <<>><Left><Left>
+inoremap <<<CR> <<
+
+inoremap {      {}<Left>
+inoremap {<CR>  {<CR>}<Esc>O
+inoremap {{     {
+inoremap {}     {}
+inoremap '      ''<Left>
+inoremap ''     '
+inoremap "      ""<Left>
+inoremap ""     "
+inoremap [      []<Left>
+inoremap [<CR>  [<CR>]<Esc>O
+inoremap []     []
+inoremap [[     [
+inoremap (      ()<Left>
+inoremap (<CR>  (<CR>)<Esc>O
+inoremap ((     (
+inoremap ()     ()
+
+inoremap <C-h> <Left>
+inoremap <C-j> <Down>
+inoremap <C-k> <Up>
+inoremap <C-l> <Right>
+cnoremap <C-h> <Left>
+cnoremap <C-j> <Down>
+cnoremap <C-k> <Up>
+cnoremap <C-l> <Right>
+
+
 " ================================================================
 " => Colors and Fonts
 " ================================================================
+"colored nested brackets, braces, parentheses
+let g:rainbow_active = 1
 
 " Enable syntax highlighting
 syntax enable
@@ -454,14 +514,14 @@ if has("termguicolors")
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
   set termguicolors
 endif
-let g:solarized_old_cursor_style=1
+"let g:solarized_old_cursor_style=1
 
 set background=dark
 
-silent! colorscheme desert
+" silent! colorscheme desert
 
 " let it fail quietly if it hasn't been installed yet
-silent! colorscheme solarized8
+" silent! colorscheme solarized8
 
 if has("nvim")
   " Update cursor after the changes to nvim
@@ -476,11 +536,13 @@ endif
 " => Files, backups and undo
 " ================================================================
 
+set undofile
+set undodir=/home/an/.vim/undodir
+
 " Turn backup off, since most stuff is in SVN, git et.c anyway...
 set nobackup
 set nowb
 set noswapfile
-
 
 " ================================================================
 " => Moving around, tabs, windows and buffers
