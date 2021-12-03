@@ -385,8 +385,10 @@ highlight PmenuSel ctermbg=black guibg=black
 highlight Pmenu ctermfg=black guifg=black
 highlight PmenuSel ctermfg=white guibg=white
 
-highlight CocHintFloat ctermfg=DarkGreen  guifg=DarkGreen
-highlight CocErrorFloat ctermfg=DarkRed  guifg=DarkRed
+"highlight CocHintFloat ctermfg=DarkGreen  guifg=DarkGreen
+"highlight CocErrorFloat ctermfg=DarkRed  guifg=DarkRed
+"for all Coc popups together 
+highlight CocFloating ctermfg=DarkRed  guifg=DarkRed 
 
 " Line Numbers
 set nu
