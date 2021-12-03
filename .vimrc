@@ -379,10 +379,14 @@ endif
 " => VIM user interface
 " ================================================================
 
+"Popup menu coloring
 highlight Pmenu ctermbg=gray guibg=gray
 highlight PmenuSel ctermbg=black guibg=black
 highlight Pmenu ctermfg=black guifg=black
 highlight PmenuSel ctermfg=white guibg=white
+
+highlight CocHintFloat ctermfg=DarkGreen  guifg=DarkGreen
+highlight CocErrorFloat ctermfg=DarkRed  guifg=DarkRed
 
 " Line Numbers
 set nu
