@@ -379,6 +379,11 @@ endif
 " => VIM user interface
 " ================================================================
 
+highlight Pmenu ctermbg=gray guibg=gray
+highlight PmenuSel ctermbg=black guibg=black
+highlight Pmenu ctermfg=black guifg=black
+highlight PmenuSel ctermfg=white guibg=white
+
 " Line Numbers
 set nu
 
